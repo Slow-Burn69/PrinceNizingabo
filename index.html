@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Curriculum Vitae de Prince Ziri">
+    <title>Prince Ziri – Portfolio Interactif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PDF.js for native rendering (no iframe!) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+</head>
+
+<body>
+    <!-- Immersive Background Video -->
+    <video autoplay loop muted playsinline class="bg-video">
+        <source src="79764-570718544_medium.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+    <div class="ambient-light"></div>
+    <div class="ambient-light light-2"></div>
+
+    <!-- UI Layer -->
+    <div class="ui-layer">
+        <div class="header">
+            <div class="brand">
+                <h1 class="name">Nizigabo Prince</h1>
+                <p class="title">Curriculum Vitae</p>
+            </div>
+
+            <div class="lang-switch">
+                <button id="btn-fr" class="active">FR</button>
+                <div class="divider"></div>
+                <button id="btn-nl">NL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Scene Container -->
+    <main class="scene" id="scene">
+        <div class="card" id="cv-card">
+            <!-- Glassmorphism back layer -->
+            <div class="card-glass"></div>
+
+            <!-- Dynamic Lighting overlay on the card for 3D effect -->
+            <div class="card-glare" id="card-glare"></div>
+
+            <!-- Canvas PDF Containers (NO IFRAME) -->
+            <div class="pdf-container active" id="pdf-fr">
+                <canvas id="pdf-canvas-fr"></canvas>
+            </div>
+            <div class="pdf-container" id="pdf-nl">
+                <canvas id="pdf-canvas-nl"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="gsap-public/gsap-public/minified/gsap.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
