@@ -252,5 +252,7 @@ canvas {
     .card-glare { inset: -10px; }
     .card::before { opacity: 0.4; filter: blur(15px); inset: -30px; }
     
-    /* Disable video on very low power mobile if needed, but let's keep for now */
+    /* Disable video on mobile for performance */
+    .bg-video { display: none; }
+    .bg-overlay { background: var(--bg-color); }
 }

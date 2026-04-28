@@ -34,7 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const page = await pdfDocument.getPage(1);
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
-            const scale = 2.5; 
+            // Lower scale on mobile for better performance
+            const isMobile = window.innerWidth <= 480;
+            const scale = isMobile ? 1.5 : 2.5; 
             const viewport = page.getViewport({ scale: scale });
             canvas.width = viewport.width;
             canvas.height = viewport.height;
@@ -205,12 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
             onComplete: () => { isTransitioning = false; }
         });
 
+        // Simplier 3D for mobile
+        const isMobile = window.innerWidth <= 480;
+        
         // The Flip & Zoom
         tl.to(card, {
-            z: -400,
+            z: isMobile ? -200 : -400,
             rotationY: isFr ? "+=360" : "-=360",
-            scale: 0.6,
-            duration: 1.2,
+            scale: isMobile ? 0.8 : 0.6,
+            duration: isMobile ? 0.8 : 1.2,
             ease: "back.inOut(1.2)"
         })
         .to(outPdf, {
