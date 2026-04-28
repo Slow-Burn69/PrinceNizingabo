@@ -235,14 +235,22 @@ canvas {
 /* Responsive */
 @media (max-width: 900px) {
     .ui-layer { padding: 1.5rem 2rem; }
-    .card { height: 70vh; width: 49vh; margin-top: 5vh; }
+    .card { height: 75vh; width: 53vh; margin-top: 5vh; }
 }
 
 @media (max-width: 480px) {
+    :root { --glass-blur: 15px; }
     .ui-layer { padding: 1rem 1.5rem; }
-    .name { font-size: 1.3rem; }
-    .title { font-size: 0.75rem; }
-    .card { height: 68vh; width: 48vh; margin-top: 8vh; }
-    .card-glass { inset: -10px; }
+    .name { font-size: 1.2rem; }
+    .title { font-size: 0.7rem; }
+    .card { height: 65vh; width: 46vh; margin-top: 10vh; }
+    .card-glass { 
+        inset: -10px; 
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px); 
+    }
     .card-glare { inset: -10px; }
+    .card::before { opacity: 0.4; filter: blur(15px); inset: -30px; }
+    
+    /* Disable video on very low power mobile if needed, but let's keep for now */
 }

@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: "bubble"
     });
 
-    // ── 4. Card Interaction (Smoother & Reactive) ──
+    // ── 4. Card Interaction (Smoother & Mobile Friendly) ──
     let idleTween;
     function initIdleFloating() {
         if (idleTween) idleTween.kill();
@@ -113,55 +113,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     initIdleFloating();
 
-    // Smoother Parallax without Inertia Plugin conflicts
-    window.addEventListener('mousemove', (e) => {
+    const handleInteraction = (x, y) => {
         if (isFullscreen) return;
         if (idleTween && idleTween.isActive()) idleTween.pause();
 
-        const x = e.clientX;
-        const y = e.clientY;
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
 
-        // Reactive tilt (reduced range for stability)
         const targetRotX = ((y - centerY) / centerY) * -12; 
         const targetRotY = ((x - centerX) / centerX) * 12;
         const targetX = (x - centerX) * 0.02;
         const targetY = (y - centerY) * 0.02;
+
+        gsap.to(card, {
+            rotationX: targetRotX,
+            rotationY: targetRotY,
+            x: targetX,
+            y: targetY,
+            duration: 0.8,
+            ease: "power2.out",
+            overwrite: "auto",
+            transformPerspective: 1200
+        });
 
         // Glare follow
         const glareX = (x / window.innerWidth) * 100;
         const glareY = (y / window.innerHeight) * 100;
         gsap.to(glare, {
             background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.15) 0%, transparent 65%)`,
-            duration: 0.4,
-            ease: "power2.out"
-        });
-
-        // The core movement: snappy follow with weighted duration
-        gsap.to(card, {
-            rotationX: targetRotX,
-            rotationY: targetRotY,
-            x: targetX,
-            y: targetY,
-            duration: 0.6,
-            ease: "power2.out",
-            overwrite: "auto", // Crucial for performance during mousemove
-            transformPerspective: 1200
+            duration: 0.5
         });
 
         // Ambient lights react
         gsap.to(ambientLight1, { x: (x - centerX) * 0.2, y: (y - centerY) * 0.2, duration: 1.5 });
         gsap.to(ambientLight2, { x: (x - centerX) * -0.15, y: (y - centerY) * -0.15, duration: 2 });
-    });
+    };
+
+    window.addEventListener('mousemove', (e) => handleInteraction(e.clientX, e.clientY));
+    window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+            handleInteraction(e.touches[0].clientX, e.touches[0].clientY);
+        }
+    }, { passive: true });
 
     window.addEventListener('mouseleave', () => {
         if (isFullscreen) return;
         if (idleTween) idleTween.play();
         gsap.to(card, { 
             rotationX: 0, rotationY: 0, rotationZ: 0, x: 0, y: 0, 
-            duration: 2.5, ease: "elastic.out(1, 0.5)" 
+            duration: 2, ease: "elastic.out(1, 0.6)" 
         });
+    });
+    
+    // Resume idle on touch end
+    window.addEventListener('touchend', () => {
+        if (isFullscreen) return;
+        if (idleTween) idleTween.play();
+        gsap.to(card, { rotationX: 0, rotationY: 0, x: 0, y: 0, duration: 2, ease: "power2.out" });
     });
 
     // ── 5. Fullscreen Toggle ──
