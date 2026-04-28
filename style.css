@@ -83,6 +83,18 @@ body, html {
     font-size: 1.6rem; font-weight: 700; letter-spacing: 1px;
     background: linear-gradient(135deg, #ffffff, #8892d6);
     -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex; gap: 0;
+    min-height: 2rem;
+    pointer-events: auto;
+}
+
+.char {
+    display: inline-block;
+    will-change: transform;
+    background: inherit;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -149,15 +161,28 @@ body, html {
 .card-glass {
     position: absolute; inset: -20px; /* The glass extends wider than the CV */
     border-radius: 20px;
-    background: var(--card-bg);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
     backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--card-border);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1),
                 0 40px 100px rgba(0, 0, 0, 0.6),
-                0 0 80px rgba(94, 106, 210, 0.2);
+                0 0 80px rgba(94, 106, 210, 0.15);
     z-index: 1;
-    transform: translateZ(-30px); /* Pushed deep back */
-    transition: opacity 0.5s ease;
+    transform: translateZ(-35px); /* Pushed slightly deeper */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Floating glow behind card */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: -60px;
+    background: radial-gradient(circle, rgba(94, 106, 210, 0.15) 0%, transparent 70%);
+    z-index: 0;
+    transform: translateZ(-60px);
+    filter: blur(30px);
+    pointer-events: none;
+    opacity: 0.8;
 }
 
 .card.fullscreen .card-glass {
